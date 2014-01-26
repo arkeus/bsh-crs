@@ -2,6 +2,7 @@ package io.arkeus.bsh.game.entity {
 	import io.arkeus.bsh.asset.Resource;
 	import io.arkeus.bsh.game.world.water.Sea;
 	import io.arkeus.bsh.utils.Registry;
+	import io.arkeus.bsh.utils.SoundSystem;
 	import io.axel.Ax;
 	import io.axel.AxU;
 	import io.axel.input.AxKey;
@@ -68,13 +69,16 @@ package io.arkeus.bsh.game.entity {
 			Registry.game.die();
 			effects.grow(0.25, 4, 4).fadeOut(0.25);
 			AxParticleSystem.emit("armin-die", center.x, center.y);
+			SoundSystem.play("die");
 		}
 		
 		private function input():void {
 			if (above && Ax.keys.down(AxKey.W) && touching & DOWN) {
 				velocity.y = -JUMP_SPEED;
+				SoundSystem.play("jump");
 			} else if (!above && Ax.keys.down(AxKey.S) && touching & UP) {
 				velocity.y = JUMP_SPEED;
+				SoundSystem.play("dive");
 			}
 			
 			if (Ax.keys.pressed(AxKey.SPACE)) {
@@ -125,10 +129,12 @@ package io.arkeus.bsh.game.entity {
 			if (above && y + height > Sea.level && velocity.y > 0) {
 				if (velocity.y > 90) {
 					AxParticleSystem.emit("splash", center.x, y + height);
+					SoundSystem.play("splash");
 				}
 				if (Ax.keys.down(AxKey.S)) {
 					above = false;
 					velocity.y = Math.max(velocity.y, JUMP_SPEED);
+					SoundSystem.play("dive");
 				} else {
 					y = Sea.level - height;
 					touching |= DOWN;
@@ -138,6 +144,9 @@ package io.arkeus.bsh.game.entity {
 				if (Ax.keys.down(AxKey.W)) {
 					above = true;
 					velocity.y = Math.min(velocity.y, -JUMP_SPEED);
+					SoundSystem.play("jump");
+					AxParticleSystem.emit("splash", center.x, y + height);
+					SoundSystem.play("splash");
 				} else {
 					y = Sea.level;
 					touching |= UP;

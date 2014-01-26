@@ -44,7 +44,7 @@ package io.arkeus.bsh.game.world {
 				frame.width = tile.width - 8;
 				frame.height = tile.height - 8;
 				if (frame.overlaps(hero)) {
-					//hero.kill();
+					hero.kill();
 				}
 			}
 		}

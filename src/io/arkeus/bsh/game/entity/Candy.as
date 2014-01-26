@@ -1,6 +1,7 @@
 package io.arkeus.bsh.game.entity {
 	import io.arkeus.bsh.asset.Resource;
 	import io.arkeus.bsh.utils.Registry;
+	import io.arkeus.bsh.utils.SoundSystem;
 	import io.axel.particle.AxParticleSystem;
 
 	public class Candy extends Entity {
@@ -12,6 +13,7 @@ package io.arkeus.bsh.game.entity {
 		override public function update():void {
 			if (overlaps(Registry.hero)) {
 				AxParticleSystem.emit("candy", center.x, center.y);
+				SoundSystem.play("candy");
 				Registry.game.getCandy();
 				destroy();
 			}

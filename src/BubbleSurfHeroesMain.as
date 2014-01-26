@@ -1,8 +1,7 @@
 package {
 	import io.arkeus.bsh.init.InitializationState;
 	import io.axel.Ax;
-
-	[SWF(width = "768", height = "576", backgroundColor = "#000000")]
+	
 	// 400x288 = 25 x 18
 	// 256x192 = 16x12
 	

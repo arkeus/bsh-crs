@@ -12,6 +12,7 @@ package io.arkeus.bsh.game {
 	import io.arkeus.bsh.game.world.water.Sea;
 	import io.arkeus.bsh.title.TitleState;
 	import io.arkeus.bsh.utils.Registry;
+	import io.arkeus.bsh.utils.SoundSystem;
 	import io.axel.Ax;
 	import io.axel.base.AxRect;
 	import io.axel.collision.AxGroupCollider;
@@ -37,6 +38,8 @@ package io.arkeus.bsh.game {
 		}
 
 		override public function create():void {
+			SoundSystem.playMusic(MusicGame);
+			
 			Registry.game = this;
 			Ax.background.hex = 0xa8ecff;
 
@@ -51,7 +54,7 @@ package io.arkeus.bsh.game {
 			add(Particle.initialize());
 			add(world);
 			add(world.objects);
-			add(hero = new Hero(Registry.flag > 0 ? Registry.flag : 64, Math.floor(world.height / 2 / World.TILE_SIZE - 1) * World.TILE_SIZE));
+			add(hero = new Hero(Registry.flag > 0 ? Registry.flag : 64, Sea.level - 16));
 
 			add(new Timer(3, Ax.viewHeight - 10));
 			add(hud = new CandyCounter(world.objects.members.length));
