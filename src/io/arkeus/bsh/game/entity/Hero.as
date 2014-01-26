@@ -1,22 +1,30 @@
 package io.arkeus.bsh.game.entity {
 	import io.arkeus.bsh.asset.Resource;
 	import io.arkeus.bsh.game.world.water.Sea;
+	import io.arkeus.bsh.utils.Registry;
 	import io.axel.Ax;
+	import io.axel.AxU;
 	import io.axel.input.AxKey;
+	import io.axel.particle.AxParticleSystem;
 
 	public class Hero extends Entity {
-		public static const SWIM_SPEED:uint = 100;
+		public static const SWIM_SPEED:uint = 96;
 		public static const JUMP_SPEED:uint = 280;
 		public static const GRAVITY:uint = 800;
+		public static const ANGLE_ADJUST_SPEED:uint = 360;
 		
 		public var above:Boolean = true;
+		public var dead:Boolean = false;
+		
+		private var targetAngle:Number = 0;
 		
 		public function Hero(x:uint, y:uint) {
-			super(x + 100, y, Resource.HERO_ARMIN, 24, 24);
+			super(x, y, Resource.HERO_ARMIN, 24, 24);
 			
 			with (animations) {
-				add("run", [0, 1, 0, 2], 4);
-				play("run");
+				add("run", [0]);
+				add("swim", [0, 1, 0, 2], 4);
+				play("swim");
 			}
 			
 			width = height = 16;
@@ -24,14 +32,35 @@ package io.arkeus.bsh.game.entity {
 			
 			velocity.x = SWIM_SPEED;
 			acceleration.y = GRAVITY;
+			
+			timers.add(0.2, function():void {
+				if (!above) {
+					AxParticleSystem.emit("bubble", center.x, center.y);
+				}
+			}, 0);
+			
+			centerOrigin();
 		}
 		
 		override public function update():void {
-			trace(Math.floor(x / 16), Math.floor(y / 16), x, y);
-			input();
-			animation();
-			physics();
+			if (!dead) {
+				input();
+				animation();
+				physics();
+			}
 			super.update();
+		}
+		
+		public function kill():void {
+			if (dead) {
+				return;
+			}
+			velocity.zero();
+			acceleration.zero();
+			dead = true;
+			Registry.game.die();
+			effects.grow(0.25, 4, 4).fadeOut(0.25);
+			AxParticleSystem.emit("armin-die", center.x, center.y);
 		}
 		
 		private function input():void {
@@ -39,6 +68,10 @@ package io.arkeus.bsh.game.entity {
 				velocity.y = -JUMP_SPEED;
 			} else if (!above && Ax.keys.down(AxKey.S) && touching & UP) {
 				velocity.y = JUMP_SPEED;
+			}
+			
+			if (Ax.keys.pressed(AxKey.SPACE)) {
+				Registry.flag = x;
 			}
 			
 			/*if (above && Ax.keys.down(AxKey.S) && touching & DOWN) {
@@ -51,7 +84,26 @@ package io.arkeus.bsh.game.entity {
 		}
 		
 		private function animation():void {
+			if (!above || touching & DOWN) {
+				animations.play("swim");
+			} else {
+				animations.play("run");
+			}
 			
+			targetAngle = Math.atan2(velocity.y, velocity.x) * 180 / Math.PI;
+			targetAngle = AxU.clamp(targetAngle, -45, 45);
+			
+			if (angle > targetAngle) {
+				angle -= ANGLE_ADJUST_SPEED * Ax.dt;
+				if (angle < targetAngle) {
+					angle = targetAngle;
+				}
+			} else if (angle < targetAngle) {
+				angle += ANGLE_ADJUST_SPEED * Ax.dt;
+				if (angle > targetAngle) {
+					angle = targetAngle;
+				}
+			}
 		}
 		
 		private function physics():void {
@@ -64,6 +116,9 @@ package io.arkeus.bsh.game.entity {
 		
 		public function collideWithWater():void {
 			if (above && y + height > Sea.level && velocity.y > 0) {
+				if (velocity.y > 90) {
+					AxParticleSystem.emit("splash", center.x, y + height);
+				}
 				if (Ax.keys.down(AxKey.S)) {
 					above = false;
 					velocity.y = Math.max(velocity.y, JUMP_SPEED);

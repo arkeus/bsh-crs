@@ -23,7 +23,8 @@ package io.arkeus.bsh.game.world {
 		
 		private function pixelToTile(pixel:uint):uint {
 			switch (pixel) {
-				case 0x755214: return 1;
+				case 0x755214: return 1; break;
+				case 0x1d1d1d: return 2; break;
 			}
 			return 0;
 		}
