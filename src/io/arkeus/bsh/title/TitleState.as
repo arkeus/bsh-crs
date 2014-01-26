@@ -30,11 +30,11 @@ package io.arkeus.bsh.title {
 				
 				add(tutorial = new AxButton(29, 156, Resource.MENU_TUTORIAL_BUTTON, 77, 17));
 				tutorial.onClick(function():void {
-					TransitionManager.fade(new GameState(0), 1, 1);
+					TransitionManager.fade(new GameState(0, true), 1, 1);
 				});
 				add(play = new AxButton(153, 156, Resource.MENU_PLAY_BUTTON, 77, 17));
 				play.onClick(function():void {
-					TransitionManager.fade(new GameState(1), 1, 1);
+					TransitionManager.fade(new GameState(1, true), 1, 1);
 				});
 			});
 		}

@@ -2,6 +2,7 @@ package io.arkeus.bsh.game.world {
 	import io.arkeus.bsh.game.entity.Hero;
 	import io.arkeus.bsh.game.world.water.Sea;
 	import io.axel.Ax;
+	import io.axel.base.AxGroup;
 	import io.axel.base.AxRect;
 	import io.axel.particle.AxParticleSystem;
 	import io.axel.tilemap.AxTile;
@@ -12,12 +13,14 @@ package io.arkeus.bsh.game.world {
 		public static const HEIGHT:uint = 12;
 		public static const TILE_SIZE:uint = 16;
 		
-		private var mapData:Array;
-		private var graphic:Class;
+		public var mapData:Array;
+		public var graphic:Class;
+		public var objects:AxGroup;
 		
-		public function World(mapData:Array, graphic:Class) {
+		public function World(mapData:Array, objects:AxGroup, graphic:Class) {
 			this.mapData = mapData;
 			this.graphic = graphic;
+			this.objects = objects;
 		}
 		
 		public function create():World {
@@ -41,7 +44,7 @@ package io.arkeus.bsh.game.world {
 				frame.width = tile.width - 8;
 				frame.height = tile.height - 8;
 				if (frame.overlaps(hero)) {
-					hero.kill();
+					//hero.kill();
 				}
 			}
 		}

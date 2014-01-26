@@ -5,6 +5,7 @@ package io.arkeus.bsh.utils {
 	public class Registry {
 		public static var game:GameState;
 		public static var hero:Hero;
+		public static var time:Number = 0;
 		
 		public static var flag:Number = 0;
 	}

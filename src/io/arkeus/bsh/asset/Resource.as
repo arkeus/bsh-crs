@@ -1,7 +1,8 @@
 package io.arkeus.bsh.asset {
 	public class Resource {
-		// Heroes
+		// Entities
 		[Embed(source = "/entity/hero_armin.png")] public static const HERO_ARMIN:Class;
+		[Embed(source = "/entity/candy.png")] public static const CANDY:Class;
 		
 		// World
 		[Embed(source = "/world/tileset.png")] public static const TILESET_SEA:Class;
@@ -16,6 +17,7 @@ package io.arkeus.bsh.asset {
 		[Embed(source = "/particle/water.png")] public static const PARTICLE_WATER:Class;
 		[Embed(source = "/particle/fish.png")] public static const PARTICLE_FISH:Class;
 		[Embed(source = "/particle/bubbles.png")] public static const PARTICLE_BUBBLES:Class;
+		[Embed(source = "/particle/candy.png")] public static const PARTICLE_CANDY:Class;
 		
 		// Backgrounds
 		[Embed(source = "/background/mountains.png")] public static const BACKGROUND_MOUNTAINS:Class;
@@ -26,5 +28,6 @@ package io.arkeus.bsh.asset {
 		[Embed(source = "/menu/title.png")] public static const MENU_TITLE:Class;
 		[Embed(source = "/menu/tutorial_button.png")] public static const MENU_TUTORIAL_BUTTON:Class;
 		[Embed(source = "/menu/play_button.png")] public static const MENU_PLAY_BUTTON:Class;
+		[Embed(source = "/menu/hud_candy.png")] public static const HUD_CANDY:Class;
 	}
 }

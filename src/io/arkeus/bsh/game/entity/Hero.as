@@ -33,9 +33,16 @@ package io.arkeus.bsh.game.entity {
 			velocity.x = SWIM_SPEED;
 			acceleration.y = GRAVITY;
 			
+			var self:Hero = this;
 			timers.add(0.2, function():void {
 				if (!above) {
 					AxParticleSystem.emit("bubble", center.x, center.y);
+				}
+			}, 0);
+			
+			timers.add(0.1, function():void {
+				if (above && touching & DOWN && self.y + height > Sea.level - 8) {
+					AxParticleSystem.emit("surf", center.x, self.y + height);
 				}
 			}, 0);
 			
@@ -71,7 +78,7 @@ package io.arkeus.bsh.game.entity {
 			}
 			
 			if (Ax.keys.pressed(AxKey.SPACE)) {
-				Registry.flag = x;
+				//Registry.flag = x;
 			}
 			
 			/*if (above && Ax.keys.down(AxKey.S) && touching & DOWN) {

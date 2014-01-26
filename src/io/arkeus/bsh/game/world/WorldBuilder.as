@@ -10,10 +10,10 @@ package io.arkeus.bsh.game.world {
 		}
 		
 		public function build():World {
-			var mapData:Array = tilemapDataGenerator.generate(level);
+			var data:Array = tilemapDataGenerator.generate(level);
 			var tileset:Class = tilesetFactory.createTileset(level);
 			
-			return new World(mapData, tileset).create();
+			return new World(data[0], data[1], tileset).create();
 		}
 	}
 }
